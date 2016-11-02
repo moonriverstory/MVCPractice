@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+
+
+    <!-- spring configuration - contextConfigLocation spring 的组件-->
+    <!-- spring configuration - spring mvc 如果业配置在这里，Initializing Spring FrameworkServlet 'spring-mvc' 会报找不到 /WEB-INF/spring-mvc-servlet.xml 错误，真烦，还是得分开-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/spring/spring-security.xml,classpath:/spring/hibernate-spring-config.xml</param-value>
+    </context-param>
+    <!--spring security-->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/mvc/login/*</url-pattern>
+    </filter-mapping>
+    <!-- 配置SpringMVC /mvc/* 专门目录，用来区分struts2-->
+    <servlet>
+        <servlet-name>spring-mvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <description>spring mvc 配置文件</description>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:/spring/spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>spring-mvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <display-name>Kevin`s Practice Display</display-name>
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/login/login.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>
